@@ -1,0 +1,14 @@
+.container {
+    margin-top: 100px;
+    width: 600px;
+}
+
+.label {
+    padding-top: 20px;
+}
+
+.btn {
+    margin-top: 40px;
+    margin-left: 150px;
+    color: white;
+}
