@@ -19,6 +19,32 @@ const db = getFirestore()
 const collRef = collection(db, 'Games')
 const docArray = []
 
+const table = document.querySelector('.t1')
+
+
+const addData = (docArray) => {
+
+    const head = `<thead class="table-dark">
+                    <th>Name</th>
+                    <th>Developer Team</th>
+                    <th>Year of release</th>
+                </thead>`
+    table.innerHTML = head
+    docArray.forEach((doc) => {
+        const query = `
+                    <tbody>
+                        <td>${doc.gameName}</td>
+                        <td>${doc.developTeam}</td>
+                        <td>${doc.releaseYear}</td>
+                    </tbody>
+    `
+        table.innerHTML += query
+
+    })
+
+
+}
+
 
 getDocs(collRef).then((snapshot) => {
     // console.log(snapshot.docs[0].data())
@@ -27,7 +53,7 @@ getDocs(collRef).then((snapshot) => {
     });
     // console.log(docArray)
     return docArray
-}).then(() => {
-
+}).then((docArray) => {
+    addData(docArray)
 })
 
