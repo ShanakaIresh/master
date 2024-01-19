@@ -21,7 +21,7 @@ let docArray = []
 
 const table = document.querySelector('.t1')
 const form = document.querySelector('form')
-const delForm = document.querySelector('.delform')
+const delForm = document.querySelector('.delForm')
 
 
 const addData = (docArray) => {
