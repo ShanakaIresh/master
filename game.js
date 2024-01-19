@@ -61,8 +61,15 @@ getDocs(collRef).then((snapshot) => {
 
 form.addEventListener('submit', (e) => {
     e.preventDefault()
-    let detArray = [form.GameName.value, form.DeveloperName.value, form.ReleaseYear.value]
+    const detArray = {
+        gameName: form.GameName.value,
+        developTeam: form.DeveloperName.value,
+        releaseYear: form.ReleaseYear.value
+    }
     console.log(detArray)
-})
 
+    addDoc(collRef, detArray).then(() => {
+        form.reset()
+    })
+})
 
