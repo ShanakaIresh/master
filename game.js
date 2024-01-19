@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAAM9mqVysr3OaXjRcbpnhFBrlvwOPIR2w",
@@ -20,6 +20,7 @@ const collRef = collection(db, 'Games')
 const docArray = []
 
 const table = document.querySelector('.t1')
+const form = document.querySelector('form')
 
 
 const addData = (docArray) => {
@@ -56,4 +57,12 @@ getDocs(collRef).then((snapshot) => {
 }).then((docArray) => {
     addData(docArray)
 })
+
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    let detArray = [form.GameName.value, form.DeveloperName.value, form.ReleaseYear.value]
+    console.log(detArray)
+})
+
 
