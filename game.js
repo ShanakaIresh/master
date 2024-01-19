@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAAM9mqVysr3OaXjRcbpnhFBrlvwOPIR2w",
@@ -17,19 +17,20 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore()
 
 const collRef = collection(db, 'Games')
-const docArray = []
+let docArray = []
 
 const table = document.querySelector('.t1')
 const form = document.querySelector('form')
+const delForm = document.querySelector('.delform')
 
 
 const addData = (docArray) => {
 
     const head = `<thead class="table-dark">
-                    <th>Name</th>
-                    <th>Developer Team</th>
-                    <th>Year of release</th>
-                </thead>`
+                        <th>Name</th>
+                        <th>Developer Team</th>
+                        <th>Year of release</th>
+                  </thead>`
     table.innerHTML = head
     docArray.forEach((doc) => {
         const query = `
@@ -40,24 +41,17 @@ const addData = (docArray) => {
                     </tbody>
     `
         table.innerHTML += query
-
     })
-
-
 }
 
 
-getDocs(collRef).then((snapshot) => {
-    // console.log(snapshot.docs[0].data())
+onSnapshot(collRef, (snapshot) => {
+    docArray = []
     snapshot.docs.forEach((doc) => {
         docArray.push({ ...doc.data(), id: doc.id })
     });
-    // console.log(docArray)
-    return docArray
-}).then((docArray) => {
     addData(docArray)
 })
-
 
 form.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -66,10 +60,24 @@ form.addEventListener('submit', (e) => {
         developTeam: form.DeveloperName.value,
         releaseYear: form.ReleaseYear.value
     }
-    console.log(detArray)
-
     addDoc(collRef, detArray).then(() => {
         form.reset()
+    })
+})
+
+
+delForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const delName = delForm.ID.value
+    docArray.forEach((element, index) => {
+        if (element.gameName === delName) {
+            const delID = element.id
+            const delRef = doc(db, 'Games', delID)
+
+            deleteDoc(delRef).then(() => {
+                form.reset()
+            })
+        }
     })
 })
 
